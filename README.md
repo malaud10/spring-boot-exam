@@ -78,6 +78,16 @@ curl -X DELETE http://localhost:8080/api/products/1
 }
 ]
 
+#### Get by ID
+
+{
+"id": 1,
+"name": "Laptop",
+"category": "Electronics",
+"price": 999.99,
+"quantity": 10
+}
+
 #### Update
 
 http://localhost:8080/api/products/1
