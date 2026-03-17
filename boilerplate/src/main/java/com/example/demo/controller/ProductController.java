@@ -46,6 +46,7 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAllProducts() {
         // TODO: Implement
         List<Product> products = productService.getAllProducts();
+        
         return ResponseEntity.ok(products);
     }
 

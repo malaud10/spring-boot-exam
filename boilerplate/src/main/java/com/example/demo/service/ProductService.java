@@ -22,9 +22,14 @@ import java.util.Optional;
 public class ProductService {
 
     // TODO: Declare a private final ProductRepository field
-
+    private final ProductRepository productRepository;
 
     // TODO: Constructor that takes ProductRepository as parameter (constructor injection)
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
 
 
     /**
@@ -32,7 +37,7 @@ public class ProductService {
      */
     public List<Product> getAllProducts() {
         // TODO: Delegate to repository
-        return null;
+        return productRepository.findAll();
     }
 
     /**
@@ -41,7 +46,11 @@ public class ProductService {
      */
     public Optional<Product> getProductById(Long id) {
         // TODO: Delegate to repository
-        return Optional.empty();
+        if(productRepository.findById(id).isPresent()) {
+            return productRepository.findById(id);
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -50,7 +59,7 @@ public class ProductService {
      */
     public Product createProduct(Product product) {
         // TODO: Delegate to repository
-        return null;
+        return productRepository.save(product);
     }
 
     /**
@@ -64,7 +73,19 @@ public class ProductService {
         // TODO: If found, update its name, category, price, and quantity
         // TODO: Save and return the updated product
         // TODO: If not found, return Optional.empty()
-        return Optional.empty();
+        Optional<Product> existingOpt = productRepository.findById(id);
+        if (existingOpt.isPresent()) {
+            Product existing = existingOpt.get();
+            existing.setName(updated.getName());
+            existing.setCategory(updated.getCategory());
+            existing.setPrice(updated.getPrice());
+            existing.setQuantity(updated.getQuantity());
+            productRepository.save(existing);
+            return Optional.of(existing);
+        } else {
+            return Optional.empty();
+        }
+
     }
 
     /**
@@ -73,6 +94,12 @@ public class ProductService {
      */
     public boolean deleteProduct(Long id) {
         // TODO: Delegate to repository
-        return false;
+        if(productRepository.findById(id).isPresent()) {
+            productRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
